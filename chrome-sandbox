@@ -2,6 +2,4 @@
 
 google-chrome --no-sandbox \
   --allow-running-insecure-content \
-  --enable-memory-info \
-  --proxy-server=localhost:8899 \
-  --user-data-dir=$HOME/.config/google-chrome-mitm "$@"
+  --enable-memory-info "$@"

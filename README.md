@@ -1,11 +1,8 @@
-Docker! Chrome! mitmproxy! wee bit of memory!
+Docker! Chrome! Xpra!
 =============================================
 
 Run Google Chrome inside an isolated [Docker](http://www.docker.io) container
-on your Linux desktop with a wee bit of RAM, useful for developing hybrid
-mobile apps.  Get Chrome Developer Tools with the memory constraints of an
-iPad.  Use mitmproxy to help debug.
-
+on your Linux desktop.
 
 Instructions
 ============
@@ -14,58 +11,29 @@ Instructions
 
         sudo apt-get install docker.io
 
-2. [Install mitmproxy](http://mitmproxy.org/doc/install.html)
+2. [Install xpra](https://www.xpra.org/)
 
-        sudo apt-get install mitmproxy
+        sudo apt-get install xpra
 
 3. Clone this repository
 
-        git clone https://github.com/cwarden/docker-chrome.git && cd docker-chrome
+        git clone https://github.com/cwarden/docker-chrome-xpra.git && cd docker-chrome-xpra
 
-4. Copy your SSH public key into place
-
-        cp ~/.ssh/id_rsa.pub authorized_keys
-
-5. Copy your mitmproxy CA cert into place
-
-        cp ~/.mitmproxy/mitmproxy-ca-cert.pem .
-
-6. Build the container
+4. Build the container
 
         sudo docker.io build -t chrome .
 
-7. Create an entry in your .ssh/config file for easy access. It should look like this:
-        
-        Host docker-chrome
-          User      chrome
-          Port      2223
-          HostName  127.0.0.1
-          # mitmproxy
-          RemoteForward 8899 localhost:8899
-          # local web server
-          RemoteForward 8000 localhost:8000
-          ForwardX11 yes
+5. Run the container and forward the xpra port
 
-8. Run the container with a wee bit of RAM and forward the ssh port
+        sudo docker.io run -d -p 127.0.0.1:9000:9000 chrome
 
-        sudo docker.io run -d -p 127.0.0.1:2223:22 -m 256m chrome
+6. Connect via xpra
 
-9. Start mitmproxy
-
-        mitmproxy -p 8899
-
-10. Connect via SSH and launch Chrome using the provided wrapper script
-
-        ssh docker-chrome chrome-sandbox http://localhost:8000/
+        xpra attach tcp:localhost:9000
 
 
 Frequently Asked Questions
 ==========================
-
-Why would I want to do this?
-----------------------------
-So you can crash your browser when you use too much RAM, just like when you run
-your bad code in a [Cordova](http://cordova.apache.org/) app on an iPad.
 
 Why do you disable Chrome's sandbox using the `--no-sandbox` flag?
 ------------------------------------------------------------------
