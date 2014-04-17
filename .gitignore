@@ -1,1 +1,2 @@
-id_rsa.pub
+authorized_keys
+mitmproxy-ca-cert.pem

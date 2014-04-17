@@ -1,60 +1,62 @@
-Docker! Chrome! PulseAudio!
-===========================
+Docker! Chrome! mitmproxy! wee bit of memory!
+=============================================
 
-Run Google Chrome inside an isolated [Docker](http://www.docker.io) container on your Linux desktop! See its sights via X11 forwarding! Hear its sounds through the magic of PulseAudio and SSH tunnels!
+Run Google Chrome inside an isolated [Docker](http://www.docker.io) container
+on your Linux desktop with a wee bit of RAM, useful for developing hybrid
+mobile apps.  Get Chrome Developer Tools with the memory constraints of an
+iPad.  Use mitmproxy to help debug.
 
 
 Instructions
 ============
 
-1. Install [PulseAudio Preferences](http://freedesktop.org/software/pulseaudio/paprefs/). Debian/Ubuntu users can do this:
+1. [Install Docker](http://docs.docker.io/en/latest/installation/) if you haven't already
 
-        sudo apt-get install paprefs
+        sudo apt-get install docker.io
 
-2. Launch PulseAudio Preferences, go to the "Network Server" tab, and check the "Enable network access to local sound devices" checkbox
+2. [Install mitmproxy](http://mitmproxy.org/doc/install.html)
 
-3. Restart PulseAudio
+        sudo apt-get install mitmproxy
 
-        sudo service pulseaudio restart
+3. Clone this repository
 
-   On some distributions, it may be necessary to completely restart your computer. You can confirm that the settings have successfully been applied using the `pax11publish` command. You should see something like this (the important part is in bold):
+        git clone https://github.com/cwarden/docker-chrome.git && cd docker-chrome
 
-   > Server: {ShortAlphanumericString}unix:/run/user/1000/pulse/native **tcp:YourHostname:4713 tcp6:YourHostname:4713**
+4. Copy your SSH public key into place
 
-   > Cookie: ReallyLongAlphanumericString
+        cp ~/.ssh/id_rsa.pub authorized_keys
 
-4. [Install Docker](http://docs.docker.io/en/latest/installation/) if you haven't already
+5. Copy your mitmproxy CA cert into place
 
-5. Clone this repository and get right in there
+        cp ~/.mitmproxy/mitmproxy-ca-cert.pem .
 
-        git clone https://github.com/jlund/docker-chrome-pulseaudio.git && cd docker-chrome-pulseaudio
+6. Build the container
 
-6. Copy your SSH public key into place
+        sudo docker.io build -t chrome .
 
-        cp ~/.ssh/id_rsa.pub .
-
-7. Build the container
-
-        sudo docker build -t chrome .
-
-8. Create an entry in your .ssh/config file for easy access. It should look like this:
+7. Create an entry in your .ssh/config file for easy access. It should look like this:
         
         Host docker-chrome
           User      chrome
-          Port      2222
+          Port      2223
           HostName  127.0.0.1
-          RemoteForward 64713 localhost:4713
+          # mitmproxy
+          RemoteForward 8899 localhost:8899
+          # local web server
+          RemoteForward 8000 localhost:8000
           ForwardX11 yes
 
-9. Run the container and forward the appropriate ports
+8. Run the container with a wee bit of RAM and forward the ssh port
 
-        sudo docker run -d -p 127.0.0.1:2222:22 chrome
+        sudo docker.io run -d -p 127.0.0.1:2223:22 -m 256m chrome
 
-10. Connect via SSH and launch Chrome using the provided PulseAudio wrapper script
+9. Start mitmproxy
 
-        ssh docker-chrome chrome-pulseaudio-forward
+        mitmproxy -p 8899
 
-11. Go watch Hulu, or whatever
+10. Connect via SSH and launch Chrome using the provided wrapper script
+
+        ssh docker-chrome chrome-sandbox http://localhost:8000/
 
 
 Frequently Asked Questions
@@ -62,15 +64,8 @@ Frequently Asked Questions
 
 Why would I want to do this?
 ----------------------------
-Sometimes you absolutely need to look at a website that uses Flash even though Flash is basically the worst thing ever in every possible regard. This lets you run Flash on Linux in a compartmentalized fashion and reduces the risk that one of its never-ending security vulnerabilities will affect your precious files or other processes. [Docker](http://www.docker.io) and [LXC](http://linuxcontainers.org) will be on your side and they both love you very much.
-
-How does it perform?
---------------------
-Flawlessly. Playing HD video from [The Daily Show](http://www.thedailyshow.com) is no problem at all. Spotify's web interface works perfectly. Your favorite restaurant's Flash-only website will cower before you in fear and quickly reveal all of its secrets.
-
-Why wouldn't I just install Google Chrome directly?
----------------------------------------------------
-You certainly can, but it's an enormous package with an even bigger set of dependencies. It's also closed source. Oh, and it *bundles Flash* into its binary. Installing Chrome directly is like inviting a really cool guy over to your house when you know that he is definitely going to bring his friend with leprosy.
+So you can crash your browser when you use too much RAM, just like when you run
+your bad code in a [Cordova](http://cordova.apache.org/) app on an iPad.
 
 Why do you disable Chrome's sandbox using the `--no-sandbox` flag?
 ------------------------------------------------------------------
@@ -84,4 +79,6 @@ It sounds like a decidedly awful idea to give Chrome and Flash the ability to do
 Author Information
 ==================
 
-You can find me on [Twitter](https://twitter.com/joshualund) if you are so inclined. I also occasionally blog at [MissingM](http://missingm.co).
+Based on [docker-chrome-pulseaudio](https://github.com/jlund/docker-chrome-pulseaudio) from Joshua Lund.
+
+Updated by [Christian G. Warden](http://xn.pinkhamster.net).
