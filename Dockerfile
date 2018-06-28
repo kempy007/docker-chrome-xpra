@@ -15,7 +15,7 @@ RUN sh -c "dpkg -i /tmp/google-chrome-stable_current_amd64.deb || exit 0"
 RUN apt-get install -y -f
 
 # Install xpra
-RUN apt-get install -y gnupg2 curl
+RUN apt-get install -y gnupg2 curl pulseaudio
 #RUN wget -q -O - https://xpra.org/dists/stretch/Release.gpg | sudo apt-key add -
 #RUN cd /etc/apt/sources.list.d/ && wget https://xpra.org/repos/stretch/xpra.list
 RUN curl https://winswitch.org/gpg.asc | apt-key add -
