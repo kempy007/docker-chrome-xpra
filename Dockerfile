@@ -31,7 +31,7 @@ USER chrome
 ENV HOME /home/chrome
 #CMD xpra start --bind-tcp=0.0.0.0:10000 :1 --start-child=/usr/local/bin/chrome-sandbox --exit-with-children --no-daemon 
 
-CMD xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child=/usr/local/bin/chrome-sandbox --exit-with-children --daemon=no \
+CMD xpra start --bind-tcp=0.0.0.0:10000 :1 --html=on --start-child=/usr/local/bin/chrome-sandbox --exit-with-children --daemon=no \
  --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1920x1080x24+32 -nolisten tcp -noreset" \
  --pulseaudio=no --notifications=no --bell=no
 
