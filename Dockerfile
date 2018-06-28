@@ -39,7 +39,7 @@ ENV HOME /home/chrome
 
 ENV DISPLAY=:100
 CMD xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child=/usr/local/bin/chrome-sandbox --exit-with-children --daemon=no \
- --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1280x720x24+32 -nolisten tcp -noreset"
+ --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1280x720x24+32 -nolisten tcp -noreset" −−pulseaudio=yes
 
 
 # Expose the xpra port
