@@ -15,7 +15,11 @@ RUN sh -c "dpkg -i /tmp/google-chrome-stable_current_amd64.deb || exit 0"
 RUN apt-get install -y -f
 
 # Install xpra
-RUN echo 'deb https://xpra.org/ stretch main' >> /etc/apt/sources.list
+RUN apt-get install gnupg2 curl
+#RUN wget -q -O - https://xpra.org/dists/stretch/Release.gpg | sudo apt-key add -
+#RUN cd /etc/apt/sources.list.d/ && wget https://xpra.org/repos/stretch/xpra.list
+RUN curl https://winswitch.org/gpg.asc | apt-key add -
+RUN echo "deb http://winswitch.org/ stretch main" > /etc/apt/sources.list.d/winswitch.list
 RUN apt-get update
 RUN apt-get install -y xpra xvfb
 
