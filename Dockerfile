@@ -15,6 +15,8 @@ RUN sh -c "dpkg -i /tmp/google-chrome-stable_current_amd64.deb || exit 0"
 RUN apt-get install -y -f
 
 # Install xpra
+RUN echo 'deb https://xpra.org/ stretch main' >> /etc/apt/sources.list
+RUN apt-get update
 RUN apt-get install -y xpra xvfb
 
 # Add the Chrome user that will run the browser
