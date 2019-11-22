@@ -23,7 +23,9 @@ RUN echo "deb http://winswitch.org/ stretch main" > /etc/apt/sources.list.d/wins
 RUN curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
 RUN apt-get update
 RUN wget http://ftp.br.debian.org/debian/pool/main/x/x264/libx264-148_0.148.2748+git97eaef2-1_amd64.deb -P /tmp/ && \
-sh -c "dpkg -i /tmp/libx264-148_0.148.2748+git97eaef2-1_amd64.deb || exit 0"
+sh -c "dpkg -i /tmp/libx264-148_0.148.2748+git97eaef2-1_amd64.deb || exit 0" && \
+wget http://ftp.br.debian.org/debian/pool/main/libv/libvpx/libvpx4_1.6.1-3+deb9u1_amd64.deb -P /tmp/ && \
+sh -c "dpkg -i /tmp/libvpx4_1.6.1-3+deb9u1_amd64.deb || exit 0" && \
 RUN apt-get install -y xpra xvfb python3-xpra ffmpeg-xpra
 
 # Add the Chrome user that will run the browser
