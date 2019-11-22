@@ -20,6 +20,7 @@ RUN apt-get install -y gnupg2 curl pulseaudio
 #RUN cd /etc/apt/sources.list.d/ && wget https://xpra.org/repos/stretch/xpra.list
 RUN curl https://winswitch.org/gpg.asc | apt-key add -
 RUN echo "deb http://winswitch.org/ stretch main" > /etc/apt/sources.list.d/winswitch.list
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 RUN apt-get update
 RUN apt-get install -y xpra xvfb
 
