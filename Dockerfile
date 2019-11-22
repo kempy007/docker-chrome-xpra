@@ -29,6 +29,13 @@ echo "Finished our RUN script"
 ## End of RUN 01
 ###################################################
 
+RUN apt-get update && apt-get install -y libxkbfile-dev npm libavcodec-extra x264 ffmpeg pkg-config python-pip python-dev build-essential 
+#&& apt-get remove -y xpra websockify
+RUN npm install --global uglifyjs && pip install websockify cython websocket
+RUN pip install yuicompressor  numpy ffmpeg 
+
+#xpra pyv4l2
+
 # Start SSH so we are ready to make a tunnel
 # CMD /usr/sbin/sshd -D
 USER chrome
