@@ -43,8 +43,9 @@ ENV HOME /home/chrome
 #CMD xpra start --bind-tcp=0.0.0.0:10000 :1 --start-child=/usr/local/bin/chrome-sandbox --exit-with-children --no-daemon 
 
 ENV DISPLAY=:100
-CMD xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child=/usr/local/bin/chrome-sandbox --exit-with-children --daemon=no \
- --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1280x720x24+32 -nolisten tcp -noreset" 
+#CMD xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child=/usr/local/bin/chrome-sandbox --exit-with-children --daemon=no \
+# --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1280x720x24+32 -nolisten tcp -noreset" 
+CMD xpra start --bind-ws=0.0.0.0:10000 --html=no --dbus-proxy=no --dbus-control=no --webcam=no --mdns=no --notifications=no --start-child=/usr/local/bin/chrome-sandbox --exit-with-children --daemon=no  --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1280x720x24+32 -nolisten tcp -noreset"
 
 #−−pulseaudio=yes
 
