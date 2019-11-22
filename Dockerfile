@@ -22,7 +22,9 @@ RUN curl https://winswitch.org/gpg.asc | apt-key add -
 RUN echo "deb http://winswitch.org/ stretch main" > /etc/apt/sources.list.d/winswitch.list
 RUN curl https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
 RUN apt-get update
-RUN apt-get install -y xpra xvfb python3-xpra ffmpeg-xpra libx264-148
+RUN wget http://ftp.br.debian.org/debian/pool/main/x/x264/libx264-148_0.148.2748+git97eaef2-1_amd64.deb -P /tmp/ && \
+sh -c "dpkg -i /tmp/libx264-148_0.148.2748+git97eaef2-1_amd64.deb || exit 0"
+RUN apt-get install -y xpra xvfb python3-xpra ffmpeg-xpra
 
 # Add the Chrome user that will run the browser
 RUN adduser --disabled-password --gecos "Chrome User" --uid 5001 chrome
